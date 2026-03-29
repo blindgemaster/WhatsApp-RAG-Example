@@ -35,7 +35,10 @@ async def reply(request: Request, Body: str = Form(), db: Session = Depends(get_
     logger.info('Senging WhatsApp Mesage')
     # Extract the phone number from the incoming webhook request
     form_data = await request.form()
-    whatsapp_number = form_data['From'].split("whatsapp:")[-1]
+    try:
+        whatsapp_number = form_data['From'].split("whatsapp:")[-1]
+    except KeyError:
+        whatsapp_number = "test_user"
     print(f"Sending the LangChain response to this number: {whatsapp_number}")
 
     # Get the generated text from the LangChain agent

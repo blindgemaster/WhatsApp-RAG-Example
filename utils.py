@@ -2,20 +2,19 @@
 import logging
 from decouple import config
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Third-party imports
 from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
 from fastapi.responses import PlainTextResponse
 
-from langchain import hub
-from langchain_community.agent_toolkits.load_tools import load_tools
-from langchain.agents import AgentExecutor, create_react_agent
 from langchain_openai import OpenAI
-from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain.memory import ChatMessageHistory
+from langchain_community.chat_message_histories import ChatMessageHistory
 
 # Local imports
 from ensemble import ensemble_retriever_from_docs
@@ -70,10 +69,12 @@ def search_wikipedia(query):
     and use the OpenAI LLM wrapper and retrieve
     the agent result based on the received query
     """
-    prompt = hub.pull("hwchase17/react")
+    from langchain_community.agent_toolkits.load_tools import load_tools
+    from langchain.agents import AgentExecutor, create_react_agent
+    prompt = hub_pull("hwchase17/react")
     llm = OpenAI(temperature=0, openai_api_key=openai_api_key)
     tools = load_tools(["wikipedia"], llm=llm)
-    agent = create_react_agent(llm=llm, tools=tools,prompt=prompt, )
+    agent = create_react_agent(llm=llm, tools=tools, prompt=prompt)
     agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
     output = agent_executor.invoke({"input": "{}".format(query)})
 

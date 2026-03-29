@@ -2,7 +2,7 @@ import os
 from typing import List, Iterable, Any
 
 from dotenv import load_dotenv
-from langchain.memory import ChatMessageHistory
+from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.callbacks import CallbackManagerForRetrieverRun
 from langchain_core.chat_history import BaseChatMessageHistory
 from langchain_core.documents import Document

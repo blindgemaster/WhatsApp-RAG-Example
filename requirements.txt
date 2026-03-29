@@ -12,11 +12,9 @@ openai
 twilio
 wikipedia
 python-decouple
-psycopg2-binary
 python-multipart
 pyngrok
 SQLAlchemy
-chroma-hnswlib
 chromadb
 huggingface-hub
 opencv-python

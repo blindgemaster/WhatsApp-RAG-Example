@@ -1,7 +1,7 @@
 import os
 
 from langchain_community.retrievers import BM25Retriever
-from langchain.retrievers import EnsembleRetriever
+from langchain_classic.retrievers import EnsembleRetriever
 from langchain_core.output_parsers import StrOutputParser
 
 from basic_chain import get_model

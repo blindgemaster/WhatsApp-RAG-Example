@@ -1,7 +1,6 @@
 import os
 
 from dotenv import load_dotenv
-from langchain import hub
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.runnables import RunnablePassthrough, RunnableLambda
@@ -35,9 +34,15 @@ def get_question(input):
 
 
 def make_rag_chain(model, retriever, rag_prompt = None):
-    # We will use a prompt template from langchain hub.
     if not rag_prompt:
-        rag_prompt = hub.pull("rlm/rag-prompt")
+        rag_prompt = ChatPromptTemplate.from_template(
+            "You are a friendly and helpful AI assistant that specializes in health and disease outbreaks. "
+            "You have access to the following context from official documents. "
+            "If the user's question is related to the context, use it to provide an accurate answer. "
+            "If the user's question is general conversation (like greetings or small talk), "
+            "respond naturally and friendly without relying on the context.\n\n"
+            "Context: {context}\n\nQuestion: {question}\n\nAnswer:"
+        )
 
     # And we will use the LangChain RunnablePassthrough to add some custom processing into our chain.
     rag_chain = (
